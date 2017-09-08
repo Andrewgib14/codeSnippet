@@ -10,7 +10,9 @@ const snippetSchema = new Schema({
     },
     language: {
         type: String,
-        required: true
+        required: true,
+        enum:
+        ["JavaScript/JSON", "HTML", "CSS", "Java", "SQL", "Ruby"]
     },
     tag: {
         type: Array,

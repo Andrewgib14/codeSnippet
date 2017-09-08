@@ -36,11 +36,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger("dev"));
 
 //routes
-app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
-app.use("/login", authRoutes);
-app.use("/signup", authRoutes);
-app.use("/user", userRoutes);
+app.use("/", checkAuth, indexRoutes);
+// app.use("/login", authRoutes);
 
 app.listen(port, function () {
     console.log(`server is running on port ${port}!`);

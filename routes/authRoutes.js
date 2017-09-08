@@ -1,6 +1,7 @@
 const express = require("express");
 const authRoutes = express.Router();
 const User = require("../models/User");
+const Snippet = require("../models/Snippet");
 const bcrypt = require("bcryptjs");
 
 authRoutes.get("/signup", (req, res) => {
@@ -45,13 +46,26 @@ authRoutes.post("/login", (req, res) => {
         const authorized = bcrypt.compareSync(reqPassword, foundUser.password);
 
         if (!authorized) {
-            return res.render("index", { errors: ["Password does not match."] });
+            return res.render("login", { errors: ["Password does not match."] });
         }
 
         delete foundUser.password;
         req.session.user = foundUser;
-        res.redirect("/user/profile");
+        res.redirect("/");
     });
 });
+
+////////////////////Create New Snippet//////////////////////
+
+authRoutes.post("/createNew", (req, res) => {
+    let newSnippet = new Snippet(req.body);
+    newSnippet.save()
+        .then(function (savedSnippet) {
+            res.redirect("/");
+        })
+        .catch(function (err) {
+            if (!savedUser) res.status(500).send("Error saving Snippet!");
+        });
+})
 
 module.exports = authRoutes;
